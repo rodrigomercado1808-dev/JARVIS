@@ -1,10 +1,10 @@
 # JARVIS
 
-JARVIS es un asistente personal modular desarrollado completamente con **JavaScript vanilla**, sin una IA generativa. El backend usa Node.js y Fastify; el frontend es HTML, CSS y JavaScript nativo servido por el mismo backend. No usa TypeScript, React ni Next.js.
+JARVIS es un asistente personal modular desarrollado completamente con **JavaScript vanilla**. El backend usa Node.js y Fastify; el frontend es HTML, CSS y JavaScript nativo servido por el mismo backend. No usa TypeScript, React ni Next.js.
 
 ## Características
 
-Incluye una API REST, interfaz responsive con estética de centro de control, búsqueda web determinista, memoria con Firestore opcional, fallback de `sessionStorage` para la sesión del navegador, herramientas extensibles, validación con Zod, logging de Fastify, health checks, sandbox de archivos y endpoints preparados para voz, visión, tareas y autenticación futura.
+Incluye una API REST, interfaz responsive con estética de centro de control, IA conversacional configurable, contexto de hasta 16 turnos, búsqueda web para fundamentar respuestas, memoria con Firestore opcional, fallback de `sessionStorage` para la sesión del navegador, herramientas extensibles, validación con Zod, logging de Fastify, health checks, sandbox de archivos y endpoints preparados para voz, visión, tareas y autenticación futura.
 
 ## Inicio local
 
@@ -17,11 +17,11 @@ npm test
 npm start
 ```
 
-Abre `http://localhost:3000`. Si Firebase no está configurado o no conecta, la aplicación arranca igualmente y la interfaz indica que usa `sessionStorage`.
+Abre `http://localhost:3000`. Si la IA no está configurada, JARVIS conserva el modo de búsqueda web. Para respuestas conversacionales, explicaciones de programación, física, física cuántica y otros temas, configura las variables `AI_*`.
 
 ## Configuración
 
-`.env.example` es la plantilla segura. No contiene claves reales y está incluido para mostrar exactamente cómo crear `.env`. JARVIS no usa una API de IA: primero busca coincidencias en su memoria y, si no las encuentra, consulta DuckDuckGo HTML mediante `fetch`. Nunca subas `.env`.
+`.env.example` es la plantilla segura. No contiene claves reales y está incluido para mostrar exactamente cómo crear `.env`. JARVIS usa cualquier API compatible con OpenAI mediante `AI_BASE_URL`, `AI_API_KEY` y `AI_MODEL`; también consulta fuentes web y las adjunta al contexto. Nunca subas `.env`.
 
 Para Firestore configura `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL` y `FIREBASE_PRIVATE_KEY`; la clave privada debe usar `\\n` escapados. Firebase es opcional: si no conecta, no se usa memoria temporal del servidor.
 
@@ -45,7 +45,7 @@ Los recuerdos se serializan, comprimen con gzip y cifran con AES-256-GCM antes d
 
 ## Arquitectura
 
-`src/app.js` registra rutas y plugins. `src/memory.js` separa memoria de Firestore y el fallback de sesión. `src/firebase.js` inicializa Firestore solo si existen credenciales. `src/tools.js` registra skills seguras. `public/` contiene la aplicación web.
+`src/app.js` registra rutas y plugins. `src/provider.js` encapsula la IA conversacional y recibe historial, memoria y fuentes web. `src/memory.js` separa memoria de Firestore y el fallback de sesión. `src/firebase.js` inicializa Firestore solo si existen credenciales. `src/tools.js` registra skills seguras. `public/` contiene la aplicación web.
 
 La calculadora usa una lista blanca estricta de caracteres. Las operaciones de archivos solo pueden actuar dentro de `storage/sandbox`; no existe un endpoint para ejecutar comandos arbitrarios del sistema. La búsqueda web guarda las fuentes en Firestore cifrado cuando está disponible, o en `sessionStorage` solamente durante la sesión actual cuando Firebase no conecta.
 
