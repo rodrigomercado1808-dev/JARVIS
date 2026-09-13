@@ -1,0 +1,39 @@
+{
+  "name": "JARVIS Embedded Knowledge Brain",
+  "version": "1.0.0",
+  "language": "es",
+  "domains": {
+    "programming": {
+      "keywords": ["programar", "programación", "código", "codigo", "javascript", "node", "python", "html", "css", "api", "backend", "frontend", "bug", "error", "función", "variable", "base de datos", "git"],
+      "intro": "Puedo ayudarte a diseñar, explicar, depurar y escribir software. Para darte una solución correcta necesito considerar el lenguaje, el entorno, la entrada, la salida y las restricciones.",
+      "facts": ["Una función encapsula comportamiento reutilizable.", "Una API define un contrato entre componentes.", "La validación de entradas debe ocurrir antes de ejecutar operaciones sensibles.", "La separación por módulos facilita las pruebas y el mantenimiento.", "Los errores deben registrarse sin exponer secretos ni información sensible."],
+      "examples": {
+        "javascript": "function sumar(a, b) {\n  if (typeof a !== 'number' || typeof b !== 'number') throw new TypeError('Se esperaban números');\n  return a + b;\n}",
+        "node": "const http = require('node:http');\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, {'Content-Type': 'application/json'});\n  res.end(JSON.stringify({ ok: true }));\n});\nserver.listen(3000);",
+        "python": "def sumar(a, b):\n    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):\n        raise TypeError('Se esperaban números')\n    return a + b"
+      }
+    },
+    "physics": {
+      "keywords": ["física", "fisica", "fuerza", "energía", "energia", "masa", "velocidad", "aceleración", "aceleracion", "gravedad", "newton", "relatividad", "electromagnetismo", "entropía", "entropia"],
+      "intro": "La física construye modelos matemáticos para describir cómo evolucionan la materia, la energía, el espacio y el tiempo.",
+      "facts": ["La segunda ley de Newton se expresa como F = m·a.", "La energía cinética clásica es Ec = ½·m·v².", "La energía no desaparece: se transforma, aunque puede disiparse como calor.", "La relatividad especial relaciona masa y energía mediante E = mc².", "Un modelo físico siempre tiene un dominio de validez y supuestos explícitos."]
+    },
+    "quantum": {
+      "keywords": ["cuántica", "cuantica", "cuántico", "cuantico", "quantum", "qubit", "superposición", "superposicion", "entrelazamiento", "incertidumbre", "heisenberg", "schrödinger", "schrodinger", "fotón", "foton"],
+      "intro": "La física cuántica describe sistemas microscópicos mediante estados, amplitudes de probabilidad y reglas de medición. No significa que cualquier cosa pueda ocurrir sin restricciones.",
+      "facts": ["Un estado cuántico contiene amplitudes; al medir se obtienen resultados probabilísticos.", "La superposición es una combinación lineal de estados posibles, no una simple indecisión clásica.", "El principio de incertidumbre limita simultáneamente la precisión de ciertos pares de observables.", "El entrelazamiento describe correlaciones que no se explican como variables clásicas independientes.", "La evolución de un sistema aislado se modela con una transformación unitaria.", "Un qubit puede representarse como α|0⟩ + β|1⟩ con |α|² + |β|² = 1."],
+      "example": "Para un qubit |ψ⟩ = α|0⟩ + β|1⟩, la probabilidad de medir 0 es |α|² y la de medir 1 es |β|². La medición cambia el estado disponible para mediciones posteriores."
+    },
+    "general": {
+      "keywords": ["qué", "que", "cómo", "como", "por qué", "por que", "explica", "definición", "definicion", "ayuda", "información", "informacion"],
+      "intro": "Puedo organizar una explicación, separar conceptos, mostrar ejemplos y señalar qué parte necesita verificación externa.",
+      "facts": ["Una buena respuesta distingue datos, inferencias y opiniones.", "Los conceptos complejos se entienden mejor por capas: definición, intuición, ejemplo y límites.", "Cuando una pregunta depende de información reciente conviene consultar fuentes actuales."]
+    }
+  },
+  "intents": {
+    "greeting": ["hola", "buenas", "buen día", "buen dia", "hey", "saludos"],
+    "more": ["amplía", "amplia", "más detalle", "mas detalle", "profundiza", "ejemplo", "otro ejemplo", "no entendí", "no entendi", "explícalo", "explicalo"],
+    "code": ["escribe", "crea", "implementa", "programa", "código", "codigo", "función", "funcion", "clase", "endpoint", "script"],
+    "compare": ["diferencia", "diferencias", "comparar", "versus", "vs", "mejor que"]
+  }
+}

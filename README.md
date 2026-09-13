@@ -1,12 +1,12 @@
 # JARVIS
 
-JARVIS es un asistente personal cuyo motor de lenguaje se entrena **desde cero**, sin conexión a APIs externas de inteligencia artificial. El backend y el frontend están escritos en JavaScript vanilla. El modelo propio se implementa en Python/PyTorch únicamente para preparación, entrenamiento e inferencia local.
+JARVIS es un asistente personal con un **cerebro embebido en el código fuente**, sin conexión a APIs externas de inteligencia artificial. El backend y el frontend están escritos en JavaScript vanilla. El sistema incluye conocimiento estructurado, detección de temas, memoria de sesión, recuperación de contexto y generadores seguros de respuestas de programación. El Transformer en Python/PyTorch queda como una vía opcional de investigación, no como requisito para iniciar JARVIS.
 
 ## Qué significa esta arquitectura
 
 No se utiliza OpenAI, Groq, OpenRouter, Gemini, Claude ni otro proveedor remoto de IA. La aplicación puede consultar Internet para obtener fuentes, pero esa búsqueda no genera la respuesta: el modelo local recibe la pregunta, el contexto, la memoria y las fuentes disponibles.
 
-El modelo que viene en el repositorio es una arquitectura Transformer pequeña y no viene entrenado porque los pesos generados serían grandes y dependen del corpus del propietario. El archivo `brain/corpus.txt` es solo una muestra para comprobar el pipeline. Un modelo que responda de forma amplia sobre programación, física y física cuántica requiere un corpus grande, legal y curado, además de hardware de entrenamiento suficiente.
+El cerebro que viene en el repositorio funciona desde el primer arranque. `brain/knowledge.json` contiene conceptos de programación, física y física cuántica; `src/embedded-brain.js` interpreta contexto, detecta intención y compone respuestas. No muestra “modelo no entrenado”. Un Transformer neuronal amplio sigue requiriendo corpus y hardware, por eso se conserva como módulo opcional y no bloquea el funcionamiento.
 
 ## Archivos del cerebro
 
@@ -17,7 +17,9 @@ El modelo que viene en el repositorio es una arquitectura Transformer pequeña y
 | `brain/prepare.py` | Convierte un corpus a datos de entrenamiento |
 | `brain/train.py` | Entrena el modelo y guarda sus pesos |
 | `brain/infer.py` | Genera texto usando los pesos locales |
-| `src/local-brain.js` | Puente entre Node.js y la inferencia local |
+| `brain/knowledge.json` | Cerebro de conocimiento incluido en el repositorio |
+| `src/embedded-brain.js` | Motor de contexto, temas, intenciones y respuestas |
+| `src/local-brain.js` | Fachada del cerebro usada por Node.js |
 
 ## Preparar y entrenar
 
@@ -35,7 +37,7 @@ npm run brain:infer
 
 Antes de entrenar seriamente, reemplaza `brain/corpus.txt` por un corpus amplio y propio. El corpus debe tener licencia compatible, eliminar información personal y separar correctamente documentos, conversaciones y ejemplos de código. Para un modelo útil conviene ampliar después el tokenizador a subpalabras y añadir evaluación, checkpoints, reanudación, validación y un conjunto de pruebas separado.
 
-Cuando exista `brain/checkpoints/jarvis.pt` y `brain/tokenizer.json`, el servidor Node lo detecta automáticamente y usa el modelo local para contestar. Si todavía no existe, usa la búsqueda web como fallback informativo y lo indica en `/health`; no se conecta a ninguna API de IA.
+El servidor Node utiliza siempre el cerebro embebido. Si existe un Transformer entrenado, puede añadirse como experimento posterior, pero su ausencia no afecta al funcionamiento ni aparece como error.
 
 ## Contexto y memoria
 
@@ -48,7 +50,7 @@ npm test
 npm start
 ```
 
-La interfaz se sirve en `http://localhost:3000`. `/health` informa si el modelo local está entrenado. `POST /api/chat` recibe `message`, `user_id` e `history` y devuelve la respuesta y las herramientas utilizadas.
+La interfaz se sirve en `http://localhost:3000`. `/health` informa que el cerebro embebido está activo. `POST /api/chat` recibe `message`, `user_id` e `history` y devuelve la respuesta, el dominio detectado y las herramientas utilizadas.
 
 ## Render
 

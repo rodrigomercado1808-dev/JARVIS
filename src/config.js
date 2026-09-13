@@ -23,6 +23,6 @@ const config = {
 };
 
 function publicConfig() {
-  return { appName: config.appName, nodeEnv: config.nodeEnv, mode: 'local-model-from-scratch', localModelConfigured: require('node:fs').existsSync(config.localModelPath), firebaseConfigured: Boolean(config.firebase.projectId && config.firebase.clientEmail && config.firebase.privateKey), memoryEncryption: true };
+  return { appName: config.appName, nodeEnv: config.nodeEnv, mode: 'embedded-brain-with-context', embeddedBrain: true, optionalTransformer: require('node:fs').existsSync(config.localModelPath), firebaseConfigured: Boolean(config.firebase.projectId && config.firebase.clientEmail && config.firebase.privateKey), memoryEncryption: true };
 }
 module.exports = { config, publicConfig };
