@@ -8,7 +8,10 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "node --test",
-    "check": "node --check src/server.js && node --check src/app.js"
+    "check": "node --check src/server.js && node --check src/app.js && node --check src/local-brain.js",
+    "brain:prepare": "python3 brain/prepare.py --input brain/corpus.txt",
+    "brain:train": "python3 brain/train.py",
+    "brain:infer": "python3 brain/infer.py --prompt \"Hola JARVIS\""
   },
   "engines": { "node": ">=20" },
   "dependencies": {

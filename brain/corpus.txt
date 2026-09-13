@@ -1,0 +1,7 @@
+JARVIS es un asistente personal. Responde con claridad y reconoce cuando necesita más información.
+
+La programación consiste en expresar procedimientos mediante código. JavaScript permite construir aplicaciones web y servidores. Una variable almacena un valor y una función agrupa instrucciones reutilizables.
+
+La física estudia la materia, la energía, el espacio y el tiempo. La mecánica clásica describe muchos fenómenos macroscópicos. La física cuántica describe sistemas microscópicos mediante estados, probabilidades y mediciones.
+
+Este archivo es solamente un corpus mínimo de demostración. Para obtener un modelo útil hay que reemplazarlo por un corpus grande, legal, limpio y representativo de los idiomas y temas que JARVIS debe conocer.

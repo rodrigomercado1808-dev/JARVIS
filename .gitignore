@@ -4,6 +4,11 @@ dist/
 .env.*
 !.env.example
 coverage/
+__pycache__/
+*.pyc
+brain/checkpoints/
+brain/data.pt
+brain/tokenizer.json
 .DS_Store
 storage/sandbox/*
 !storage/sandbox/.gitkeep

@@ -11,16 +11,8 @@ services:
         value: production
       - key: AUTH_MODE
         value: development
-      - key: AI_PROVIDER
-        value: openai-compatible
-      - key: AI_MODEL
-        value: gpt-5-mini
-      - key: AI_TIMEOUT_MS
-        value: "60000"
-      - key: AI_API_KEY
-        sync: false
-      - key: AI_BASE_URL
-        sync: false
+      - key: PYTHON_COMMAND
+        value: python3
       - key: AI_MODEL
         sync: false
       - key: FIREBASE_PROJECT_ID
