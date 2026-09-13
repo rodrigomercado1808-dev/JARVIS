@@ -4,7 +4,7 @@ JARVIS es un asistente personal modular desarrollado completamente con **JavaScr
 
 ## Características
 
-Incluye una API REST, interfaz responsive con estética de centro de control, búsqueda web determinista, memoria con Firestore opcional, fallback local para desarrollo, herramientas extensibles, validación con Zod, logging de Fastify, health checks, sandbox de archivos y endpoints preparados para voz, visión, tareas y autenticación futura.
+Incluye una API REST, interfaz responsive con estética de centro de control, búsqueda web determinista, memoria con Firestore opcional, fallback de `sessionStorage` para la sesión del navegador, herramientas extensibles, validación con Zod, logging de Fastify, health checks, sandbox de archivos y endpoints preparados para voz, visión, tareas y autenticación futura.
 
 ## Inicio local
 
@@ -17,15 +17,15 @@ npm test
 npm start
 ```
 
-Abre `http://localhost:3000`. Si no configuras un proveedor de IA, la aplicación arranca igualmente y la interfaz indica que la IA no está configurada.
+Abre `http://localhost:3000`. Si Firebase no está configurado o no conecta, la aplicación arranca igualmente y la interfaz indica que usa `sessionStorage`.
 
 ## Configuración
 
 `.env.example` es la plantilla segura. No contiene claves reales y está incluido para mostrar exactamente cómo crear `.env`. JARVIS no usa una API de IA: primero busca coincidencias en su memoria y, si no las encuentra, consulta DuckDuckGo HTML mediante `fetch`. Nunca subas `.env`.
 
-Para Firestore configura `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL` y `FIREBASE_PRIVATE_KEY`; la clave privada debe usar `\\n` escapados. Firebase es opcional en desarrollo: sin esas variables se utiliza memoria temporal en proceso.
+Para Firestore configura `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL` y `FIREBASE_PRIVATE_KEY`; la clave privada debe usar `\\n` escapados. Firebase es opcional: si no conecta, no se usa memoria temporal del servidor.
 
-Los recuerdos se serializan, comprimen con gzip y cifran con AES-256-GCM antes de guardarse. Firestore conserva solamente metadatos mínimos y el sobre cifrado; el contenido no queda legible directamente en la consola. `MEMORY_ENCRYPTION_KEY` es imprescindible en producción: si se pierde, los recuerdos no pueden descifrarse. La compresión reduce el tamaño, pero el cifrado por sí solo no hace los datos más livianos.
+Los recuerdos se serializan, comprimen con gzip y cifran con AES-256-GCM antes de guardarse en Firestore. Firestore conserva solamente metadatos mínimos y el sobre cifrado; el contenido no queda legible directamente en la consola. `MEMORY_ENCRYPTION_KEY` es imprescindible en producción: si se pierde, los recuerdos no pueden descifrarse. La compresión reduce el tamaño, pero el cifrado por sí solo no hace los datos más livianos. Cuando Firebase no está disponible, el navegador guarda las respuestas de búsquedas en `sessionStorage` durante la sesión actual y las elimina al limpiar la sesión.
 
 ## API
 
@@ -45,9 +45,9 @@ Los recuerdos se serializan, comprimen con gzip y cifran con AES-256-GCM antes d
 
 ## Arquitectura
 
-`src/app.js` registra rutas y plugins. `src/provider.js` abstrae el proveedor de IA. `src/memory.js` separa conversación de memoria permanente. `src/firebase.js` inicializa Firestore solo si existen credenciales. `src/tools.js` registra skills seguras. `public/` contiene la aplicación web.
+`src/app.js` registra rutas y plugins. `src/memory.js` separa memoria de Firestore y el fallback de sesión. `src/firebase.js` inicializa Firestore solo si existen credenciales. `src/tools.js` registra skills seguras. `public/` contiene la aplicación web.
 
-La calculadora usa una lista blanca estricta de caracteres. Las operaciones de archivos solo pueden actuar dentro de `storage/sandbox`; no existe un endpoint para ejecutar comandos arbitrarios del sistema. La búsqueda web guarda las fuentes encontradas como una memoria cifrada para poder reutilizarlas en consultas posteriores.
+La calculadora usa una lista blanca estricta de caracteres. Las operaciones de archivos solo pueden actuar dentro de `storage/sandbox`; no existe un endpoint para ejecutar comandos arbitrarios del sistema. La búsqueda web guarda las fuentes en Firestore cifrado cuando está disponible, o en `sessionStorage` solamente durante la sesión actual cuando Firebase no conecta.
 
 ## Render
 
