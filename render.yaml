@@ -11,8 +11,6 @@ services:
         value: production
       - key: AUTH_MODE
         value: development
-      - key: PYTHON_COMMAND
-        value: python3
       - key: AI_MODEL
         sync: false
       - key: FIREBASE_PROJECT_ID
