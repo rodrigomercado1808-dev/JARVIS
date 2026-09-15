@@ -1,6 +1,6 @@
 # JARVIS
 
-JARVIS es un asistente personal escrito en **JavaScript vanilla** con un cerebro local que funciona desde el primer arranque. No utiliza APIs de inteligencia artificial ni Python/PyTorch para operar.
+JARVIS es un asistente personal escrito en **JavaScript vanilla** con un cerebro local que funciona desde el primer arranque. No utiliza APIs de inteligencia artificial ni Python/PyTorch para operar. Primero conversa con su cerebro; solo consulta Internet cuando detecta que necesita información actual o desconocida.
 
 ## Cerebro local
 
@@ -39,7 +39,7 @@ Abre `http://localhost:3000`. No hay que descargar un modelo, entrenar un checkp
 
 ## Contexto y memoria
 
-El frontend conserva los últimos mensajes de la sesión y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si está disponible; de lo contrario, el navegador utiliza `sessionStorage`. La búsqueda web solamente aporta fuentes y no reemplaza al cerebro local.
+El frontend conserva los últimos mensajes de la sesión y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si está disponible; de lo contrario, el navegador utiliza `sessionStorage`. La búsqueda web solo se activa cuando hace falta: sus resultados se guardan como aprendizaje y se sintetizan en una respuesta coherente, sin mostrar una lista cruda de enlaces.
 
 ## Ampliar el cerebro
 

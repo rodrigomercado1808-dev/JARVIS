@@ -8,6 +8,7 @@ const { config, publicConfig } = require('./config');
 const { isConnected } = require('./firebase');
 const { MemoryManager } = require('./memory');
 const { answer, localModelAvailable } = require('./local-brain');
+const { needsWebSearch } = require('./neural-engine');
 const { searchWeb } = require('./web-search');
 const { tools, listTools } = require('./tools');
 
@@ -22,11 +23,13 @@ function buildApp() {
   app.post('/api/chat', async (request, reply) => {
     const parsed = z.object({ user_id: z.string().min(1).default(config.defaultUserId), message: z.string().min(1).max(10000), history: z.array(z.object({ role: z.string(), content: z.string() })).max(20).default([]) }).safeParse(request.body);
     if (!parsed.success) return reply.code(400).send({ success: false, error: parsed.error.flatten() });
-    const { user_id, message, history } = parsed.data; const context = await memory.getContext(user_id, message); let webResults = []; let response; let usedTools = [];
-    try { const web = await searchWeb(message); webResults = web.results; if (webResults.length) { usedTools.push('web'); await memory.saveMemory({ userId: user_id, content: JSON.stringify(web), type: 'web_research', importance: 0.6, metadata: { query: message } }); } } catch { /* la IA puede responder con su conocimiento si la web no está disponible */ }
-    if (localModelAvailable()) { try { const result = await answer({ message, history, memories: context.memories, webResults }); response = result.text; usedTools.push(...result.usedTools); } catch (error) { app.log.warn({ err: error.message }, 'local model unavailable; using web fallback'); } }
-    if (!response) { response = webResults.length ? `Encontré estas fuentes en Internet:\n\n${webResults.map((r, i) => `${i + 1}. ${r.title}\n${r.snippet}\n${r.url}`).join('\n\n')}` : 'No encontré resultados web adicionales, pero puedo responder con mi cerebro embebido.'; usedTools.push('web-fallback'); }
-    return { success: true, response, conversation_id: `conversation:${user_id}`, message_id: crypto.randomUUID(), used_tools: usedTools, storage: isConnected() ? 'firebase' : 'sessionStorage', local_model: usedTools.includes('local-model') };
+    const { user_id, message, history } = parsed.data; const context = await memory.getContext(user_id, message); let webResults = []; let usedTools = [];
+    const firstPass = await answer({ message, history, memories: context.memories, webResults: [] });
+    if (needsWebSearch(message, { label: firstPass.domain, probabilities: { [firstPass.domain]: firstPass.confidence } }, { label: firstPass.intent })) {
+      try { const web = await searchWeb(message); webResults = web.results; if (webResults.length) { usedTools.push('web-learning'); await memory.saveMemory({ userId: user_id, content: JSON.stringify({ query: message, learned: webResults.map(r => ({ title: r.title, snippet: r.snippet, url: r.url })) }), type: 'learned_research', importance: 0.7, metadata: { query: message, learnedAt: new Date().toISOString() } }); } } catch { usedTools.push('web-unavailable'); }
+    }
+    const result = await answer({ message, history, memories: context.memories, webResults }); usedTools.push(...result.usedTools);
+    return { success: true, response: result.text, conversation_id: `conversation:${user_id}`, message_id: crypto.randomUUID(), used_tools: [...new Set(usedTools)], storage: isConnected() ? 'firebase' : 'sessionStorage', local_model: true, learned: webResults.length > 0, domain: result.domain, intent: result.intent, confidence: result.confidence };
   });
   app.post('/api/memory', async (request, reply) => { const parsed = z.object({ user_id: z.string().default(config.defaultUserId), content: z.string().min(1), type: z.string().default('general'), importance: z.number().min(0).max(1).default(0.5) }).safeParse(request.body); if (!parsed.success) return reply.code(400).send({ success: false, error: parsed.error.flatten() }); const { user_id, ...memoryData } = parsed.data; return { success: true, memory: await memory.saveMemory({ userId: user_id, ...memoryData }) }; });
   app.get('/api/memory', async request => ({ memories: await memory.searchMemory(request.query?.user_id || config.defaultUserId, request.query?.q || '') }));
