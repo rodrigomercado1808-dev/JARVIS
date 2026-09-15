@@ -14,6 +14,8 @@ Esta es una IA local híbrida: tiene un componente neuronal con pesos y un compo
 
 JARVIS entiende contexto de conversación, recupera mensajes relevantes por similitud vectorial, identifica programación, física, física cuántica y temas generales, detecta intenciones de saludo, generación de código, profundización, preguntas de causa, instrucciones de procedimiento y comparación, y crea respuestas variadas en lenguaje natural. El conocimiento incluye JavaScript, Node.js, Python, HTML, CSS, APIs, validación, módulos, Git, Newton, energía, relatividad, qubits, superposición, entrelazamiento e incertidumbre.
 
+El orquestador personal (`src/assistant-orchestrator.js`) decide si una consulta requiere conversación, memoria, capacidades, fecha y hora, cálculo seguro, conocimiento o una acción que necesita confirmación. Esto le da un comportamiento más parecido al de un asistente personal: no trata toda entrada como una pregunta de Wikipedia y no ejecuta instrucciones destructivas ambiguas.
+
 ## Archivos principales
 
 | Archivo | Propósito |
@@ -23,6 +25,7 @@ JARVIS entiende contexto de conversación, recupera mensajes relevantes por simi
 | `src/neural-engine.js` | Tokenización, vectores, softmax, similitud y clasificación |
 | `src/embedded-brain.js` | Generación de respuesta y composición contextual |
 | `src/local-brain.js` | Fachada usada por el backend |
+| `src/assistant-orchestrator.js` | Enrutamiento de intenciones y guardas de seguridad |
 | `scripts/inspect-brain.js` | Inspección de pesos y vocabulario |
 | `scripts/test-brain.js` | Prueba directa del cerebro |
 
@@ -37,7 +40,7 @@ npm test
 npm start
 ```
 
-Abre `http://localhost:3000`. No hay que descargar un modelo, entrenar un checkpoint ni configurar una API de IA.
+Abre `http://localhost:3000`. No hay que descargar un modelo, entrenar un checkpoint ni configurar una API de IA. Desde el chat se pueden pedir capacidades, cálculos simples, fecha/hora, explicaciones, código y ayuda contextual.
 
 ## Contexto y memoria
 
@@ -55,7 +58,7 @@ npm run brain:test
 npm test
 ```
 
-Los pesos incluidos son pesos iniciales diseñados y versionados para las capacidades actuales; no son un archivo ficticio ni una conexión a otro modelo. Si en el futuro se necesita un modelo neuronal generativo de gran escala, habrá que implementar un entrenamiento real con un corpus legal y grande, pero eso sería una ampliación distinta del cerebro actual.
+Los pesos incluidos son pesos iniciales diseñados y versionados para las capacidades actuales; no son un archivo ficticio ni una conexión a otro modelo. El aprendizaje continuo actual ocurre mediante memoria contextual y aprendizaje de conversaciones/investigaciones autenticadas. No reescribe los pesos automáticamente porque un asistente seguro debe poder separar recuerdos de parámetros base y evitar contaminarse con información incorrecta. Si en el futuro se necesita un modelo neuronal generativo de gran escala, habrá que implementar un entrenamiento real con un corpus legal y grande, pero eso sería una ampliación distinta del cerebro actual.
 
 ## API
 
