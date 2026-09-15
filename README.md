@@ -8,11 +8,11 @@ La interfaz incluye registro, inicio y cierre de sesión con Firebase Authentica
 
 El cerebro está en `brain/weights.json` y `brain/knowledge.json`. `weights.json` contiene pesos numéricos versionados, vocabulario, sesgos y matrices de clasificación. `src/neural-engine.js` transforma el lenguaje en vectores, calcula similitud, aplica softmax y clasifica dominio e intención. `src/embedded-brain.js` convierte esas señales en respuestas naturales usando el conocimiento, el contexto, la memoria y las fuentes web disponibles.
 
-Esta es una IA local híbrida: tiene un componente neuronal con pesos y un componente simbólico de conocimiento y generación. No es un modelo lingüístico gigante tipo ChatGPT; para eso se necesitarían miles de millones de parámetros y un corpus enorme. Pero es un cerebro funcional, auditable, ampliable y ejecutable en Node.js sin servicios externos.
+Esta es una IA local híbrida: tiene un componente neuronal con pesos y un componente simbólico de conocimiento y generación. No es un modelo lingüístico gigante tipo ChatGPT; para eso se necesitarían miles de millones de parámetros y un corpus enorme. Pero es un cerebro funcional, auditable, ampliable y ejecutable en Node.js sin servicios externos. No existe una especificación pública verificable de “GPT-6” que pueda copiarse; JARVIS aplica patrones generales de sistemas conversacionales modernos: intención, recuperación contextual, síntesis, memoria y aprendizaje incremental.
 
 ## Capacidades actuales
 
-JARVIS entiende contexto de conversación, recupera mensajes relevantes por similitud vectorial, identifica programación, física, física cuántica y temas generales, detecta intenciones de saludo, generación de código, profundización y comparación, y crea respuestas en lenguaje natural. El conocimiento incluye JavaScript, Node.js, Python, HTML, CSS, APIs, validación, módulos, Git, Newton, energía, relatividad, qubits, superposición, entrelazamiento e incertidumbre.
+JARVIS entiende contexto de conversación, recupera mensajes relevantes por similitud vectorial, identifica programación, física, física cuántica y temas generales, detecta intenciones de saludo, generación de código, profundización, preguntas de causa, instrucciones de procedimiento y comparación, y crea respuestas variadas en lenguaje natural. El conocimiento incluye JavaScript, Node.js, Python, HTML, CSS, APIs, validación, módulos, Git, Newton, energía, relatividad, qubits, superposición, entrelazamiento e incertidumbre.
 
 ## Archivos principales
 
@@ -41,7 +41,7 @@ Abre `http://localhost:3000`. No hay que descargar un modelo, entrenar un checkp
 
 ## Contexto y memoria
 
-El frontend conserva los últimos mensajes del chat único y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si el usuario inició sesión; de lo contrario, el navegador utiliza `sessionStorage`. La búsqueda web solo se activa cuando hace falta: sus resultados se guardan como aprendizaje y se sintetizan en una respuesta coherente, sin mostrar una lista cruda de enlaces.
+El frontend conserva los últimos mensajes del chat único y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si el usuario inició sesión; de lo contrario, el navegador utiliza `sessionStorage`. Para usuarios autenticados, cada turno se guarda como `conversation_learning` y cada investigación como `learned_research`; así JARVIS aprende de forma incremental sin reescribir automáticamente sus pesos ni incorporar contenido sin control. La búsqueda web solo se activa cuando hace falta: sus resultados se guardan como aprendizaje y se sintetizan en una respuesta coherente, sin mostrar una lista cruda de enlaces.
 
 Para habilitar login, crea una aplicación Web en Firebase, habilita Email/Password en Authentication y completa las variables `FIREBASE_WEB_*` y las credenciales Admin de Firestore. La API key Web no es un secreto de servidor, pero las credenciales Admin sí lo son y nunca deben publicarse.
 
