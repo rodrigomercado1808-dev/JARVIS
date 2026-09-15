@@ -2,6 +2,8 @@
 
 JARVIS es un asistente personal escrito en **JavaScript vanilla** con un cerebro local que funciona desde el primer arranque. No utiliza APIs de inteligencia artificial ni Python/PyTorch para operar. Primero conversa con su cerebro; solo consulta Internet cuando detecta que necesita información actual o desconocida.
 
+La interfaz incluye registro, inicio y cierre de sesión con Firebase Authentication. Un usuario autenticado obtiene un `uid` y sus memorias se guardan en Firestore cifrado. Un visitante sin sesión no se guarda en Firebase: utiliza `sessionStorage` para la sesión actual.
+
 ## Cerebro local
 
 El cerebro está en `brain/weights.json` y `brain/knowledge.json`. `weights.json` contiene pesos numéricos versionados, vocabulario, sesgos y matrices de clasificación. `src/neural-engine.js` transforma el lenguaje en vectores, calcula similitud, aplica softmax y clasifica dominio e intención. `src/embedded-brain.js` convierte esas señales en respuestas naturales usando el conocimiento, el contexto, la memoria y las fuentes web disponibles.
@@ -39,7 +41,9 @@ Abre `http://localhost:3000`. No hay que descargar un modelo, entrenar un checkp
 
 ## Contexto y memoria
 
-El frontend conserva los últimos mensajes de la sesión y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si está disponible; de lo contrario, el navegador utiliza `sessionStorage`. La búsqueda web solo se activa cuando hace falta: sus resultados se guardan como aprendizaje y se sintetizan en una respuesta coherente, sin mostrar una lista cruda de enlaces.
+El frontend conserva los últimos mensajes del chat único y los envía en cada consulta. El motor vectoriza el mensaje actual y ordena el historial y las memorias por similitud. Firebase almacena memorias cifradas y comprimidas si el usuario inició sesión; de lo contrario, el navegador utiliza `sessionStorage`. La búsqueda web solo se activa cuando hace falta: sus resultados se guardan como aprendizaje y se sintetizan en una respuesta coherente, sin mostrar una lista cruda de enlaces.
+
+Para habilitar login, crea una aplicación Web en Firebase, habilita Email/Password en Authentication y completa las variables `FIREBASE_WEB_*` y las credenciales Admin de Firestore. La API key Web no es un secreto de servidor, pero las credenciales Admin sí lo son y nunca deben publicarse.
 
 ## Ampliar el cerebro
 
