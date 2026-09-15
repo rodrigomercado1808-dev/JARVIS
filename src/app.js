@@ -16,7 +16,7 @@ function buildApp() {
   const memory = new MemoryManager(); const started = Date.now();
   app.register(cors, { origin: true }); app.register(fastifyStatic, { root: path.join(__dirname, '..', 'public'), prefix: '/' });
   app.get('/', async (_, reply) => reply.sendFile('index.html'));
-  app.get('/health', async () => ({ status: 'ok', version: require('../package.json').version, firebase: isConnected(), embeddedBrain: true, optionalTransformer: localModelAvailable(), mode: 'embedded-brain-with-context', uptimeSeconds: Math.round((Date.now() - started) / 1000) }));
+  app.get('/health', async () => ({ status: 'ok', version: require('../package.json').version, firebase: isConnected(), embeddedBrain: localModelAvailable(), weights: 'brain/weights.json', mode: 'javascript-neural-brain-with-context', uptimeSeconds: Math.round((Date.now() - started) / 1000) }));
   app.get('/api/status', async () => ({ ...publicConfig(), storageMode: isConnected() ? 'firebase' : 'sessionStorage' }));
   app.get('/api/tools', async () => ({ tools: listTools() }));
   app.post('/api/chat', async (request, reply) => {

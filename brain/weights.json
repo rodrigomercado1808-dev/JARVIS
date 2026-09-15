@@ -1,0 +1,20 @@
+{
+  "format": "jarvis-neural-brain-v1",
+  "version": "1.0.0",
+  "vocabulary": ["programar","programacion","codigo","javascript","node","python","html","css","api","backend","frontend","bug","error","funcion","variable","base","datos","git","fisica","fuerza","energia","masa","velocidad","gravedad","newton","relatividad","cuantica","quantum","qubit","superposicion","entrelazamiento","incertidumbre","heisenberg","fotón","hola","buenas","explica","como","que","por","ejemplo","escribe","crea","implementa","profundiza","detalle","diferencia","comparar","no","entiendo","contexto","antes","continuar"],
+  "domains": ["programming","physics","quantum","general"],
+  "domainWeights": [
+    [3,3,3,4,4,3,2,2,3,3,3,2,2,3,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,3,3,4,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5,4,4,4,4,4,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2]
+  ],
+  "intentWeights": {
+    "greeting": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    "code": [0,0,3,3,2,0,2,2,3,2,2,2,2,3,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0],
+    "deep": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,3,3,0,0,3,0],
+    "compare": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0]
+  },
+  "bias": {"programming": 0.4, "physics": 0.2, "quantum": 0.2, "general": 0.1},
+  "temperature": 0.7
+}
